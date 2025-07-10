@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EnfrokEI OS</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #121212;
+      font-family: 'San Francisco', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: white;
+    }
+    .hidden {
+      display: none;
+    }
+    .centered {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .container {
+      background: #1e1e1e;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      width: 100%;
+      max-width: 400px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 0.8rem;
+      background: #3a80f7;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #336de0;
+    }
+    .terms-box {
+      margin-top: 1rem;
+      height: 150px;
+      overflow-y: auto;
+      padding: 1rem;
+      background: #1c1c1c;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .app-container {
+      display: none;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 2rem;
+      justify-content: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .app-icon {
+      background: #1f1f1f;
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+    .app-icon:hover {
+      transform: scale(1.05);
+    }
+    .app-name {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .window {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 400px;
+      background: #1e1e1e;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+      padding: 1rem;
+      display: none;
+      flex-direction: column;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .window-header {
+      font-weight: bold;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .close-btn, .min-btn {
+      background: #3a80f7;
+      border: none;
+      color: white;
+      padding: 0.3rem 0.6rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .error {
+      color: #ff5555;
+      text-align: center;
+      margin-top: 1rem;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="centered" id="welcomeScreen">
+    <h1>Welcome to EnfrokEI</h1>
+    <button onclick="redirectToSetup()">Continue</button>
+  </div>
+
+  <div class="centered hidden" id="setupScreen">
+    <div class="container">
+      <h2>Setup EnfrokEI</h2>
+      <input type="text" id="nameInput" placeholder="Enter your name" />
+      <input type="password" id="passwordInput" placeholder="Enter a password" />
+      <button onclick="showTerms()">Continue</button>
+    </div>
+  </div>
+
+  <div class="centered hidden" id="termsScreen">
+    <div class="container">
+      <h2>Terms & Conditions</h2>
+      <div class="terms-box">
+        <p>By using Nature 3.0 (also referred to as EnfrokEI), you agree to the following terms and conditions. Nature 3.0 is provided for personal, educational, and development use. The system is offered as-is, with no warranty or guarantee of uninterrupted performance...</p>
+      </div>
+      <button onclick="finalizeSetup()">Continue</button>
+    </div>
+  </div>
+
+  <div class="centered hidden" id="loginScreen">
+    <div class="container">
+      <h2 id="loginName"></h2>
+      <input type="password" id="loginPassword" placeholder="Enter your password" />
+      <button onclick="login()">Continue</button>
+      <p class="error" id="loginError"></p>
+    </div>
+  </div>
+
+  <div class="app-container" id="appScreen">
+    <!-- App icons inserted here (same as your previous layout) -->
+    <!-- ... COPY EXISTING ICONS AND WINDOWS HERE ... -->
+  </div>
+
+  <script>
+    function redirectToSetup() {
+      document.getElementById('welcomeScreen').classList.add('hidden');
+      setTimeout(() => {
+        document.getElementById('setupScreen').classList.remove('hidden');
+      }, 2000);
+    }
+    function showTerms() {
+      const name = document.getElementById('nameInput').value.trim();
+      const pass = document.getElementById('passwordInput').value;
+      if (!name || !pass) return;
+      localStorage.setItem('userName', name);
+      localStorage.setItem('userPass', pass);
+      document.getElementById('setupScreen').classList.add('hidden');
+      document.getElementById('termsScreen').classList.remove('hidden');
+    }
+    function finalizeSetup() {
+      document.getElementById('termsScreen').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('loginName').textContent = localStorage.getItem('userName');
+    }
+    function login() {
+      const entered = document.getElementById('loginPassword').value;
+      const saved = localStorage.getItem('userPass');
+      if (entered === saved) {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('appScreen').style.display = 'flex';
+      } else {
+        document.getElementById('loginError').textContent = 'Wrong password.';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -12,7 +12,7 @@
       color: white;
     }
     .hidden {
-      display: none;
+      display: none;a
     }
     .centered {
       display: flex;
@@ -208,12 +208,22 @@
     }
 
     function showTerms() {
-      const name = document.getElementById('nameInput').value.trim();
-      const pass = document.getElementById('passwordInput').value;
-      const error = document.getElementById('setupError');
-      if (!name || !pass) {
-        error.textContent = 'Please enter both name and password.';
-        return;
+     function showTerms() {
+  const name = document.getElementById('nameInput').value.trim();
+  const pass = document.getElementById('passwordInput').value;
+  const setupError = document.getElementById('setupError');
+
+  if (!name || !pass) {
+    setupError.textContent = 'Please fill in both name and password.';
+    return;
+  }
+
+  localStorage.setItem('userName', name);
+  localStorage.setItem('userPass', pass);
+  document.getElementById('setupScreen').classList.add('hidden');
+  document.getElementById('termsScreen').classList.remove('hidden');
+}
+
       }
       error.textContent = '';
       localStorage.setItem('userName', name);

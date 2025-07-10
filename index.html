@@ -138,6 +138,7 @@
   </style>
 </head>
 <body>
+  <!-- SETUP SCREENS -->
   <div class="centered" id="welcomeScreen">
     <h1>Welcome to EnfrokEI</h1>
     <button onclick="redirectToSetup()">Continue</button>
@@ -156,7 +157,7 @@
     <div class="container">
       <h2>Terms & Conditions</h2>
       <div class="terms-box">
-        <p>By using Nature 3.0 (also referred to as EnfrokEI), you agree to the following terms and conditions. Nature 3.0 is provided for personal, educational, and development use. The system is offered as-is, with no warranty or guarantee of uninterrupted performance...</p>
+        <p>By using Nature 3.0 (also referred to as EnfrokEI), you agree to the following terms and conditions. Nature 3.0 is provided for personal, educational, and development use. The system is offered as-is, with no warranty or guarantee of uninterrupted performance. You agree to use this system responsibly and without engaging in harmful or malicious activities. The creators are not responsible for any loss or damage resulting from use. By proceeding, you accept these terms.</p>
       </div>
       <button onclick="finalizeSetup()">Continue</button>
     </div>
@@ -171,11 +172,64 @@
     </div>
   </div>
 
+  <!-- APP SCREEN -->
   <div class="app-container" id="appScreen">
-    <!-- App icons inserted here (same as your previous layout) -->
-    <!-- ... COPY EXISTING ICONS AND WINDOWS HERE ... -->
+    <div class="app-icon" onclick="openApp('settings')">
+      <div class="app-name">Settings</div>
+    </div>
+    <div class="app-icon" onclick="openApp('derter')">
+      <div class="app-name">Derter</div>
+    </div>
+    <div class="app-icon" onclick="openApp('calculator')">
+      <div class="app-name">Calculator</div>
+    </div>
+    <div class="app-icon" onclick="openApp('notebook')">
+      <div class="app-name">Notebook</div>
+    </div>
+    <div class="app-icon" onclick="openApp('intelligence')">
+      <div class="app-name">The Enfrokian Intelligence</div>
+    </div>
+    <div class="app-icon" onclick="location.reload()">
+      <div class="app-name">Lock</div>
+    </div>
   </div>
 
+  <!-- APP WINDOWS -->
+  <div class="window" id="settings">
+    <div class="window-header">Settings <span><button class="min-btn" onclick="minimizeApp('settings')">_</button><button class="close-btn" onclick="closeApp('settings')">X</button></span></div>
+    <div>
+      <p>Select your appearance:</p>
+      <button onclick="alert('Dark mode enabled')">Dark</button>
+      <button onclick="alert('White mode enabled')">White</button>
+      <p style="margin-top:1rem;">Select font:</p>
+      <button onclick="alert('Font set to Enchris Hensasko')">Enchris Hensasko</button>
+      <button onclick="alert('Font set to Poppins')">Poppins</button>
+      <button onclick="alert('Font set to Monospace')">Monospace</button>
+      <p style="margin-top:2rem;">Version: Nature 3.0</p>
+    </div>
+  </div>
+  <div class="window" id="derter">
+    <div class="window-header">Derter <span><button class="min-btn" onclick="minimizeApp('derter')">_</button><button class="close-btn" onclick="closeApp('derter')">X</button></span></div>
+    <iframe src="https://example.com" style="flex:1; width:100%; height:90%; border:none;"></iframe>
+  </div>
+  <div class="window" id="calculator">
+    <div class="window-header">Calculator <span><button class="min-btn" onclick="minimizeApp('calculator')">_</button><button class="close-btn" onclick="closeApp('calculator')">X</button></span></div>
+    <input type="text" id="calcInput" style="width:100%; font-size:1.2rem; margin-bottom:1rem;" />
+    <button onclick="calculate()">=</button>
+    <div id="calcResult"></div>
+  </div>
+  <div class="window" id="notebook">
+    <div class="window-header">Notebook <span><button class="min-btn" onclick="minimizeApp('notebook')">_</button><button class="close-btn" onclick="closeApp('notebook')">X</button></span></div>
+    <textarea style="width:100%; height:90%; background:#1c1c1c; color:white; border:none; padding:1rem; border-radius:10px;"></textarea>
+  </div>
+  <div class="window" id="intelligence">
+    <div class="window-header">The Enfrokian Intelligence <span><button class="min-btn" onclick="minimizeApp('intelligence')">_</button><button class="close-btn" onclick="closeApp('intelligence')">X</button></span></div>
+    <input type="text" id="aiInput" placeholder="Ask me anything..." style="width:100%; margin-bottom:1rem; padding:0.5rem; border-radius:10px; border:none;" />
+    <button onclick="runAI()">Ask</button>
+    <div id="aiResponse" style="margin-top:1rem;"></div>
+  </div>
+
+  <!-- SCRIPT -->
   <script>
     function redirectToSetup() {
       document.getElementById('welcomeScreen').classList.add('hidden');
@@ -205,6 +259,34 @@
         document.getElementById('appScreen').style.display = 'flex';
       } else {
         document.getElementById('loginError').textContent = 'Wrong password.';
+      }
+    }
+    function openApp(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+    function closeApp(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    function minimizeApp(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    function calculate() {
+      try {
+        const input = document.getElementById('calcInput').value;
+        const result = eval(input);
+        document.getElementById('calcResult').innerText = `Result: ${result}`;
+      } catch {
+        document.getElementById('calcResult').innerText = 'Invalid expression.';
+      }
+    }
+    function runAI() {
+      let input = document.getElementById("aiInput").value.toLowerCase();
+      input = input.replace(/plus/g, '+').replace(/minus/g, '-').replace(/times|x/g, '*').replace(/divided by|÷/g, '/');
+      try {
+        const result = eval(input.replace(/[^0-9+\-*/().]/g, ''));
+        document.getElementById('aiResponse').innerText = `The answer is ${result}.`;
+      } catch {
+        document.getElementById('aiResponse').innerText = "Sorry, I couldn't understand that.";
       }
     }
   </script>
